@@ -6,12 +6,14 @@ import java.sql.*;
  * Created by adaeng on 2017. 3. 15..
  */
 public class UserDao {
+    private ConntionMaker conntionMaker;
+
+    public UserDao(ConntionMaker conntionMaker){
+        this.conntionMaker = conntionMaker;
+    }
+
     public User get(Long id) throws ClassNotFoundException, SQLException {
-        //User 어디에있어? Mysql
-        //Class 를 로딩해야되겠네.
-        Class.forName("com.mysql.jdbc.Driver");
-        //커넥션을 맺기
-        Connection connection = DriverManager.getConnection("jdbc:mysql://113.198.162.186/test", "root", "as0109247");
+        Connection connection = conntionMaker.getconnection();
         //쿼리를만들어야겠네
         PreparedStatement preparedStatement = connection.prepareStatement("select * from user where id = ?");
         preparedStatement.setLong(1, id);
@@ -34,7 +36,7 @@ public class UserDao {
 
 
     public Long add(User user) throws ClassNotFoundException, SQLException {
-        Connection connection = getconnection();
+        Connection connection = conntionMaker.getconnection();
         //쿼리를만들어야겠네
         PreparedStatement preparedStatement = connection.prepareStatement("INSERT into user(name,password) VALUES (?,?)");
 
