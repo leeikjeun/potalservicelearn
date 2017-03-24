@@ -14,4 +14,24 @@ public class HallaConntionMaker implements ConntionMaker {
         Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/test?charasetEncoding=utf-8", "root", "as0109247");
         return connection;
     }
+
+    @Override
+    public void setId(String id) {
+
+    }
+
+    @Override
+    public void setPassword(String password) {
+
+    }
+
+    @Override
+    public void setUrl(String url) {
+
+    }
+
+    @Override
+    public void setClassname(String classname) {
+
+    }
 }

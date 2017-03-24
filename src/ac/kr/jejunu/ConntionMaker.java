@@ -8,4 +8,12 @@ import java.sql.SQLException;
  */
 public interface ConntionMaker {
     public Connection getconnection() throws ClassNotFoundException, SQLException;
+
+    void setId(String id);
+
+    void setPassword(String password);
+
+    void setUrl(String url);
+
+    void setClassname(String classname);
 }
