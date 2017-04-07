@@ -133,4 +133,40 @@ public class JdbcContext {
                 }
         }
     }
+
+    public Long insert(String sql, Object[] parms) throws SQLException {
+        StatmentStrategy statmentStrategy = connection -> {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            for(int i = 1 ; i <= parms.length; i++){
+                preparedStatement.setObject(i, parms[i - 1]);
+            }
+            return preparedStatement;
+        };
+
+        return jdbcContextWithStatementStrategyForInsert(statmentStrategy);
+    }
+
+    public User queryForObject(String sql, Object[] parms) throws SQLException {
+        StatmentStrategy statmentStrategy = connection -> {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            for(int i = 1 ; i <=parms.length; i++){
+                preparedStatement.setObject(i, parms[i - 1]);
+            }
+            return preparedStatement;
+        };
+
+        return jdbcContextWithStatementStrategyForGet(statmentStrategy);
+    }
+
+    public void update(String sql, Object[] parms) throws SQLException {
+        StatmentStrategy statmentStrategy = connection -> {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            for(int i = 1 ; i <= parms.length; i++){
+                preparedStatement.setObject(i, parms[i - 1]);
+            }
+            return preparedStatement;
+        };
+
+        jdbcContextWithStatementStrategyForUpdate(statmentStrategy);
+    }
 }
