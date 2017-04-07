@@ -10,10 +10,10 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class DaoFactory {
 
-    @Bean
-    public UserDao UserDao() {
-        return new UserDao(getConnationMaker());
-    }
+//    @Bean
+//    public UserDao UserDao() {
+//        return new UserDao(getConnationMaker());
+//    }
     /*
     *  UserDao userDao = new UserDao();
     * userDao.setConnectionMaker(ConnetionMaker());

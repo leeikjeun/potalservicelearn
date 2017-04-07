@@ -1,15 +1,21 @@
 package ac.kr.jejunu;
 
+import javax.sql.DataSource;
 import java.sql.*;
 
 /**
  * Created by adaeng on 2017. 3. 15..
  */
 public class UserDao {
-    private ConntionMaker conntionMaker;
 
-    public UserDao(ConntionMaker conntionMaker){
-        this.conntionMaker = conntionMaker;
+    private DataSource dataSource;
+
+//    public UserDao(ConntionMaker conntionMaker){
+//        this.dataSource = conntionMaker;
+//    }
+
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 
     public User get(Long id) throws ClassNotFoundException, SQLException {
@@ -20,10 +26,10 @@ public class UserDao {
         User user = null;
 
         try {
-            connection = conntionMaker.getconnection();
+            connection = dataSource.getConnection();
             //쿼리를만들어야겠네
-            StatmentStrategy statmentStrategy = new GetUserStatementStrategy();
-            preparedStatement =statmentStrategy.makeStatement(id,connection);
+            StatmentStrategy statmentStrategy = new GetUserStatementStrategy(id);
+            preparedStatement =statmentStrategy.makeStatement(connection);
             //쿼리를실행해야겠네
             resultSet = preparedStatement.executeQuery();
             // 실행된 결과를 객체에 매핑해야겠네
@@ -33,9 +39,6 @@ public class UserDao {
                 user.setName(resultSet.getString("name"));
                 user.setPassword(resultSet.getString("password"));
             }
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            throw e;
         } catch (SQLException e) {
             e.printStackTrace();
             throw e;
@@ -72,9 +75,9 @@ public class UserDao {
         Long id = null;
 
         try {
-            connection = conntionMaker.getconnection();
-            StatmentStrategy statmentStrategy = new AddUserStatementStrategy();
-            preparedStatement =statmentStrategy.makeStatement(user,connection);
+            connection = dataSource.getConnection();
+            StatmentStrategy statmentStrategy = new AddUserStatementStrategy(user);
+            preparedStatement =statmentStrategy.makeStatement(connection);
             //쿼리를실행해야겠네
             preparedStatement.executeUpdate();
 
@@ -82,10 +85,7 @@ public class UserDao {
             resultSet = preparedStatement.executeQuery();
             resultSet.next();
             id = resultSet.getLong(1);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            throw e;
-        } catch (SQLException e) {
+        }catch (SQLException e) {
             e.printStackTrace();
             throw e;
         } finally {
@@ -122,15 +122,12 @@ public class UserDao {
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         try {
-            connection = conntionMaker.getconnection();
-            StatmentStrategy statmentStrategy = new UpdateUserStatementStrategy();
-            preparedStatement =statmentStrategy.makeStatement(user,connection);
+            connection = dataSource.getConnection();
+            StatmentStrategy statmentStrategy = new UpdateUserStatementStrategy(user);
+            preparedStatement =statmentStrategy.makeStatement(connection);
             //쿼리를실행해야겠네
             preparedStatement.executeUpdate();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            throw e;
-        } catch (SQLException e) {
+        }catch (SQLException e) {
             e.printStackTrace();
             throw e;
         } finally {
@@ -150,16 +147,13 @@ public class UserDao {
     }
 
     public void delete(Long id) throws SQLException, ClassNotFoundException {
+        StatmentStrategy statmentStrategy = new DeleteUserStatementStrategy(id);
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         try {
-            connection = conntionMaker.getconnection();
-            StatmentStrategy statmentStrategy = new DeleteUserStatementStrategy();
-            preparedStatement =statmentStrategy.makeStatement(id,connection);
+            connection = dataSource.getConnection();
+            preparedStatement =statmentStrategy.makeStatement(connection);
             preparedStatement.executeUpdate();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            throw e;
         } catch (SQLException e) {
             e.printStackTrace();
             throw e;

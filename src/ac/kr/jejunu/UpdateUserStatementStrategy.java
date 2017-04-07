@@ -8,9 +8,13 @@ import java.sql.SQLException;
  * Created by adaeng on 2017. 3. 31..
  */
 public class UpdateUserStatementStrategy implements StatmentStrategy {
+    private User user;
+    public UpdateUserStatementStrategy(User user) {
+        this.user = user;
+    }
+
     @Override
-    public PreparedStatement makeStatement(Object object, Connection connection) throws SQLException {
-        User user = (User) object;
+    public PreparedStatement makeStatement(Connection connection) throws SQLException {
 
         PreparedStatement preparedStatement = connection.prepareStatement("UPDATE user set name = ?, password = ? where id = ?");
         preparedStatement.setString(1, user.getName());

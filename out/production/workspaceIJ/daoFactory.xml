@@ -2,15 +2,17 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
-
     <bean id="userDao" class="ac.kr.jejunu.UserDao" >
-
-        <constructor-arg ref="connectionMaker"/>
+        <property name="dataSource" ref="dataSource"/>
+        <!--<property name="connectionMaker" ref="connectionMaker"> -->
     </bean>
-    <bean id="connectionMaker" class="ac.kr.jejunu.jejuConnetionMaker">
-        <property name="id" value="root" />
+    <!--<bean id="jdbcContext" class="ac.kr.jejunu.JdbcContext">-->
+        <!--<property name="dataSource" ref="dataSource" />-->
+    <!--</bean>-->
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
+        <property name="username" value="root" />
         <property name="password" value="as0109247" />
         <property name="url" value="jdbc:mysql://127.0.0.1/test?charasetEncoding=utf-8" />
-        <property name="classname" value="com.mysql.jdbc.Driver" />
+        <property name="driverClass" value="com.mysql.jdbc.Driver" />
     </bean>
 </beans>
