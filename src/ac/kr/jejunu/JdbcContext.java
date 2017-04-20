@@ -19,11 +19,10 @@ public class JdbcContext {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         User user = null;
-
         try {
             connection = dataSource.getConnection();
             //쿼리를만들어야겠네
-            preparedStatement =statmentStrategy.makeStatement(connection);
+            preparedStatement = statmentStrategy.makeStatement(connection);
             //쿼리를실행해야겠네
             resultSet = preparedStatement.executeQuery();
             // 실행된 결과를 객체에 매핑해야겠네
